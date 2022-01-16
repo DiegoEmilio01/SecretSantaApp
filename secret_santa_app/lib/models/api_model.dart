@@ -3,15 +3,30 @@ import 'package:flutter/material.dart';
 
 class ApiModel extends ChangeNotifier{
   String algorithm = "random";
-  String message = "Estimad@ XX, te ha tocado YY. ¡Compra un buen regalo!";
+  String message = "";
+  List<List<String>> users = [["", ""], ["", ""]];
 
   void updateAlgorithm(newAlgorithm) {
     algorithm = newAlgorithm;
-    print(algorithm);
   }
 
   void updateMessage(newMessage) {
     message = newMessage;
-    print(message);
+  }
+
+  void updateUsername(id, username) {
+    users[id][0] = username;
+  }
+
+  void updateEmail(id, email) {
+    users[id][1] = email;
+  }
+
+  void addUser() {
+    if (users.length < 25) users.add(["", ""]);
+  }
+
+  void deleteUser() {
+    if (users.length > 2) users.removeLast();
   }
 }

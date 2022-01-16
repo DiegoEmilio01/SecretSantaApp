@@ -13,15 +13,19 @@ class AlgorithmDropdown extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 30, 20, 15),
       child: Column(children: <Widget>[
         Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+          //const SizedBox(width: 30.0),
           const Text("Algoritmo", style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
           IconButton(
-            icon: const Icon(Icons.zoom_in_rounded, color: Colors.white),
+            padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 5.0),
+            constraints: const BoxConstraints(),
+            iconSize: 20.0,
+            icon: const Icon(Icons.help_outline, color: Colors.white),
             onPressed: info,
           ),
         ]),
-        const SizedBox(height: 5),
+        const SizedBox(height: 15),
         const Text("Elige qué algoritmo quieres que se utilice para generar el sorteo.", style: TextStyle(fontSize: 16, color: Colors.white)),
-        const SizedBox(height: 5),
+        const SizedBox(height: 10),
         DropdownButton<String>(
           value: dropdownValue,
           iconSize: 32,
@@ -53,7 +57,7 @@ class MessageInput extends StatelessWidget {
       child: Column(children: <Widget>[
         const Text("Mensaje", style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
         const SizedBox(height: 15),
-        const Text("Escribe qué mensaje deseas enviarle a los participantes. Usa XX para indicar quién envía e YY para indicar quién recibe.", style: TextStyle(fontSize: 16, color: Colors.white)),
+        const Text("Escribe qué mensaje deseas enviarle a los participantes. Usa XX para indicar quién envía e YY para indicar quién recibe (serán reemplazados por el texto correcto).", style: TextStyle(fontSize: 16, color: Colors.white)),
         const SizedBox(height: 15),
         Container(
           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -79,5 +83,33 @@ class MessageInput extends StatelessWidget {
           ),
         ),
     ]));
+  }
+}
+
+class InputText extends StatelessWidget {
+  const InputText({Key? key, this.text="", required this.onChanged}) : super(key: key);
+  final String text;
+  final Function(String) onChanged;
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(child: Container(
+      alignment: Alignment.center,
+      height: 60.0,
+      margin: const EdgeInsets.all(0),
+      decoration: BoxDecoration(
+        color: Colors.deepPurpleAccent,
+        border: Border.all(color: Colors.white, width: 1.5)
+      ),
+      child: TextField(
+        controller: TextEditingController(text: text),
+        style: const TextStyle(color: Colors.white, fontSize: 18),
+        decoration: const InputDecoration(
+          contentPadding: EdgeInsets.all(8),
+          filled: false,
+          border: InputBorder.none,
+        ),
+        onChanged: onChanged,
+      ),
+    ));
   }
 }
