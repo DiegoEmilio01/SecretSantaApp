@@ -5,6 +5,8 @@ import 'package:secret_santa_app/pages/algorithms.dart';
 import 'package:secret_santa_app/styles/inputs.dart';
 import 'package:secret_santa_app/styles/tables.dart';
 import 'package:secret_santa_app/styles/buttons.dart';
+import 'package:secret_santa_app/styles/alerts.dart';
+
 
 void main() {
   runApp(
@@ -37,9 +39,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  String algorithmDropdownValue = "random";
-
+  final TextEditingController controller = TextEditingController(text: "");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,14 +55,14 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               AlgorithmDropdown(
                 info: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const Algorithms())),
-                dropdownValue: algorithmDropdownValue,
+                dropdownValue: Provider.of<ApiModel>(context, listen: false).algorithm,
                 list: const [["random", "Aleatorio"], ["one_circle", "Circular"]],
                 onChanged: (String? newValue) => setState(() {
-                  algorithmDropdownValue = newValue!;
                   Provider.of<ApiModel>(context, listen: false).updateAlgorithm(newValue);
                 }),
               ),
               MessageInput(
+                controller: controller,
                 onChanged: (newValue) => {Provider.of<ApiModel>(context, listen: false).updateMessage(newValue)},
               ),
               const SizedBox(height: 15),
@@ -105,11 +105,17 @@ class _HomePageState extends State<HomePage> {
                   setState(() {});
                 },
               ),
-              SendButton(
-                onClick: (){
-                  setState(() {});
-                },
-              ),
+              SendButton(onClick: (){
+                Provider.of<ApiModel>(context, listen: false).sendToApi().then((bool postResult) {
+                  if (postResult) {
+                    textDialog("Correos enviados correctamente.", context);
+                    controller.text = "";
+                    setState(() {});
+                  } else {
+                    textDialog("Falta completar algún dato.", context);
+                  }
+                });
+              }),
             ],
           ),
         ),

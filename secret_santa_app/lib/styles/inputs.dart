@@ -48,7 +48,8 @@ class AlgorithmDropdown extends StatelessWidget {
 }
 
 class MessageInput extends StatelessWidget {
-  const MessageInput({Key? key, required this.onChanged}) : super(key: key);
+  const MessageInput({Key? key, required this.controller, required this.onChanged}) : super(key: key);
+  final TextEditingController controller;
   final Function(String) onChanged;
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,7 @@ class MessageInput extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
           child: TextFormField(
-            initialValue: "",
+            controller: controller,
             minLines: 2,
             maxLines: 5,
             keyboardType: TextInputType.multiline,
